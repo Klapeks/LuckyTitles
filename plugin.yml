@@ -1,0 +1,12 @@
+name: MCosmeticTitles
+description: 'Titles'
+author: Klapeks
+main: com.klapeks.cosmetic.TitlesMain
+version: 1.0
+api-version: 1.13
+softdepend: [KlapeksLibs]
+
+permissions:
+  mytitles.reload:
+    description: Ability to reload plugin
+    default: op
