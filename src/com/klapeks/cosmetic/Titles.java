@@ -23,6 +23,11 @@ public class Titles {
 		else _db = new TitleSQL();
 		return _db;
 	}
+	static void disconnect() {
+		if (_db==null) return;
+		_db.disconnect();
+		_db = null;
+	}
 	
 	static List<TitleCategory> categories = new ArrayList<>();
 	

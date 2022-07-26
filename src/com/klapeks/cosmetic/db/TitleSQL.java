@@ -12,17 +12,21 @@ public class TitleSQL implements TitleDB {
 	public void init() {
 		SQL.sql().createTableIfNotExists(TitlePlayer.class);
 	}
+	@Override
+	public void disconnect() {
+		SQL.sql().disconnect();
+	}
 
 	@Override
 	public List<String> getTitles(String playername, String category) {
 		Where where = SQL.where("`player` = ? AND `category` = ?", playername.toLowerCase(), category);
-		return SQL.sql().selectFirst(TitlePlayer.class, where).titles;
+		return SQL.sql().selectOne(TitlePlayer.class, where).titles;
 	}
 
 	@Override
 	public void addTitle(String playername, String category, String title) {
 		Where where = SQL.where("`player` = ? AND `category` = ?", playername.toLowerCase(), category);
-		TitlePlayer tp = SQL.sql().selectFirst(TitlePlayer.class, where);
+		TitlePlayer tp = SQL.sql().selectOne(TitlePlayer.class, where);
 		if (tp==null) {
 			tp = new TitlePlayer();
 			tp.player = playername.toLowerCase();

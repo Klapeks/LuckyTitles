@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.klapeks.cosmetic.Titles.TitleCategory;
-import com.klapeks.cosmetic.db.TitleDB;
 import com.klapeks.libs.commands.ComplexMatiaCommand;
 import com.klapeks.libs.commands.MatiaCommand;
 import com.klapeks.libs.commands.Messaging;
@@ -57,7 +55,7 @@ public class TitlesMain extends JavaPlugin {
 					if (args.length==4 && "add".equals(args[0])) {
 						if (Titles.getCategory(args[2])==null) return cmds;
 						Titles.getCategory(args[2]).titles.keySet().forEach(s -> {
-							if (s.startsWith(args[2])) cmds.add(s);
+							if (s.startsWith(args[3])) cmds.add(s);
 						});
 					}
 				}
@@ -152,10 +150,11 @@ public class TitlesMain extends JavaPlugin {
 			}
 		};
 		loadTitles();
-		Titles.db().init();
 	}
 	
 	public static void loadTitles() {
+		Titles.disconnect();
+		Titles.db().init();
 		File file = new File("plugins/Titles/titles.yml");
 		FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 		Titles.resetTitles();
