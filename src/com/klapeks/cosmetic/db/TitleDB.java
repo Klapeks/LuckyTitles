@@ -1,12 +1,35 @@
 package com.klapeks.cosmetic.db;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface TitleDB {
+import com.klapeks.db.SQL;
+import com.klapeks.sql.Where;
 
-	public List<String> getTitles(String playername, String category);
-	public void addTitle(String playername, String category, String title);
-	public void init();
-	public void disconnect();
+public class TitleDB {
+	
+	public static void init() {
+		SQL.sql().createTableIfNotExists(TitlePlayer.class);
+	}
+
+	public static List<String> getTitles(String playername, String category) {
+		Where where = SQL.where("`player` = ? AND `category` = ?", playername.toLowerCase(), category);
+		return SQL.sql().selectOne(TitlePlayer.class, where).titles;
+	}
+
+	public static void addTitle(String playername, String category, String title) {
+		Where where = SQL.where("`player` = ? AND `category` = ?", playername.toLowerCase(), category);
+		TitlePlayer tp = SQL.sql().selectOne(TitlePlayer.class, where);
+		if (tp==null) {
+			tp = new TitlePlayer();
+			tp.player = playername.toLowerCase();
+			tp.category = category;
+			tp.titles = new ArrayList<>();
+			SQL.sql().insert(tp);
+		}
+		else if (tp.titles.contains(title)) return;
+		tp.titles.add(title);
+		SQL.sql().update(tp, where);
+	}
 	
 }

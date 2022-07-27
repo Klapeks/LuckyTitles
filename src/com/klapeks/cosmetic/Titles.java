@@ -9,25 +9,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.klapeks.cosmetic.db.TitleDB;
-import com.klapeks.cosmetic.db.TitleSQL;
-import com.klapeks.db.SQL;
 import com.klapeks.libs.xItem;
 import com.klapeks.libs.nms.NMS;
 
 public class Titles {
-	
-	private static TitleDB _db;
-	public static TitleDB db() {
-		if (!SQL.isSQLType()) {}
-		else _db = new TitleSQL();
-		return _db;
-	}
-	static void disconnect() {
-		if (_db==null) return;
-		_db.disconnect();
-		_db = null;
-	}
 	
 	static List<TitleCategory> categories = new ArrayList<>();
 	

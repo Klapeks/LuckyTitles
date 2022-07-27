@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.klapeks.cosmetic.Titles.TitleCategory;
+import com.klapeks.cosmetic.db.TitleDB;
 import com.klapeks.libs.commands.ComplexMatiaCommand;
 import com.klapeks.libs.commands.MatiaCommand;
 import com.klapeks.libs.commands.Messaging;
@@ -75,7 +76,7 @@ public class TitlesMain extends JavaPlugin {
 					String player = args[1];
 					String category_id = args[2];
 					String title_id = args[3];
-					Titles.db().addTitle(player, category_id, title_id);
+					TitleDB.addTitle(player, category_id, title_id);
 					ccs.sendMessage("§aDone");
 					return true;
 				}
@@ -87,7 +88,7 @@ public class TitlesMain extends JavaPlugin {
 					String player = args[1];
 					String category_id = args[2];
 					ccs.sendMessage("Titles:");
-					for (String s : Titles.db().getTitles(player, category_id)) {
+					for (String s : TitleDB.getTitles(player, category_id)) {
 						ccs.sendMessage(s);
 					};
 					return true;
@@ -153,8 +154,7 @@ public class TitlesMain extends JavaPlugin {
 	}
 	
 	public static void loadTitles() {
-		Titles.disconnect();
-		Titles.db().init();
+		TitleDB.init();
 		File file = new File("plugins/Titles/titles.yml");
 		FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 		Titles.resetTitles();
