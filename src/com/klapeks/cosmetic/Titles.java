@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.klapeks.libs.xItem;
@@ -29,22 +30,29 @@ public class Titles {
 	}
 	
 	static TitleCategory createCategory(String id, String name) {
-		return category(id, name);
-	}
-	public static TitleCategory getCategory(String id) {
-		return category(id, id);
-	}
-	private static TitleCategory category(String id, String name) {
-		for (TitleCategory tc : categories) {
-			if (tc.getId().equals(id)) return tc;
-		}
-		TitleCategory c = new TitleCategory(id, name);
+		TitleCategory c = getCategory(id);
+		if (c != null) return c;
+		c = new TitleCategory(id, name);
 		categories.add(c);
 		return c;
 	}
-	public static void openMenu(Player p, String id) {
-		getCategory(id).getMenu().openInventory(p);
+	public static TitleCategory getCategory(String id) {
+		for (TitleCategory tc : categories) {
+			if (tc.getId().equalsIgnoreCase(id)) return tc;
+		}
+		return null;
 	}
+	public static List<String> getCategoriesIds() {
+		return Titles.categories.stream().map(t->t.id).collect(Collectors.toList());
+	}
+	public static Set<String> getCategoryTitlesIds(String category_id) {
+		TitleCategory tc = Titles.getCategory(category_id);
+		if (tc==null) return null;
+		return tc.titles.keySet();
+	}
+//	public static void openMenu(Player p, String id) {
+//		getCategory(id).getMenu().openInventory(p);
+//	}
 	
 	
 	

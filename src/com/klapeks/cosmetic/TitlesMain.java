@@ -23,133 +23,14 @@ public class TitlesMain extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		ComplexMatiaCommand cmd = new ComplexMatiaCommand("pa:fakeopen");
-		cmd.on(p -> {
-			p.sendMessage("open/close");
-			
-		});
-		cmd.on("open", p -> NMS.server.broadcastChestAnimation(p.getTargetBlock(null, 10).getLocation(), true));
-		cmd.on("close", p -> NMS.server.broadcastChestAnimation(p.getTargetBlock(null, 10).getLocation(), false));
-		
-		new MatiaCommand("m:titles") {
-			
-			public List<String> tab(CommandSender sender, String[] args){
-//				p.sendMessage(Arrays.toString(args) + " - " + args.length);
-				List<String> cmds = new ArrayList<>();
-				if (args.length==1) {
-					if (sender instanceof Player) Titles.categories.forEach(t->{
-						if (t.getId().startsWith(args[0])) cmds.add(t.getId());
-					});
-					if (sender.hasPermission("mytitles.reload")) {
-						if ("reload".startsWith(args[0])) cmds.add("reload");
-					}
-					if ("list".startsWith(args[0])) cmds.add("list");
-					if ("add".startsWith(args[0])) cmds.add("add");
-				}
-				else if ("add".equals(args[0]) || "get".equals(args[0])) {
-					if (args.length==2) return players;
-					if (args.length==3) {
-						Titles.categories.forEach(t->{
-							if (t.getId().startsWith(args[2])) cmds.add(t.getId());
-						});
-					}
-					if (args.length==4 && "add".equals(args[0])) {
-						if (Titles.getCategory(args[2])==null) return cmds;
-						Titles.getCategory(args[2]).titles.keySet().forEach(s -> {
-							if (s.startsWith(args[3])) cmds.add(s);
-						});
-					}
-				}
-				return cmds;
-			}
-			public boolean onCmd(CommandSender ccs, String[] args) {
-				if (args == null || args.length==0 || args[0].equals("list")) {
-					sendList(ccs);
-					return true;
-				}
-				switch (args[0]) {
-				case "add": {
-					if (args.length <= 3) {
-						ccs.sendMessage("§cUsage: /titles add <player> <category_id> <title_id>");
-						return true;
-					}
-					String player = args[1];
-					String category_id = args[2];
-					String title_id = args[3];
-					TitleDB.addTitle(player, category_id, title_id);
-					ccs.sendMessage("§aDone");
-					return true;
-				}
-				case "get": {
-					if (args.length <= 2) {
-						ccs.sendMessage("§cUsage: /titles get <player> <category_id>");
-						return true;
-					}
-					String player = args[1];
-					String category_id = args[2];
-					ccs.sendMessage("Titles:");
-					for (String s : TitleDB.getTitles(player, category_id)) {
-						ccs.sendMessage(s);
-					};
-					return true;
-				}
-
-				default:
-					break;
-				}
-				return false;
-			}
-			
-			@Override
-			public void onCommand(Player p, String[] args) {
-				if (onCmd(p, args)) return;
-				if (args[0].equals("reload")) {
-					if (!p.hasPermission("mytitles.reload")) {
-						p.sendMessage("§9[Titles] §cNo perms");
-						return;
-					}
-					p.sendMessage("§9[Titles] §6Reloading...");
-					loadTitles();
-					return;
-				}
-				Titles.openMenu(p, args[0]);
-			}
-			public void sendList(CommandSender sender) {
-				StringBuilder sb = new StringBuilder();
-				sb.append("§6Title Categories §7(");
-				sb.append(Titles.categories.size());
-				sb.append(")§r");
-				for (TitleCategory tc : Titles.categories) {
-					sb.append("\n");
-					sb.append("§r ");
-					sb.append(tc.getId());
-					sb.append("§7 (");
-					sb.append(tc.titles.size());
-					sb.append(")§r - ");
-					sb.append(Messaging.msg(tc.getName()));
-					sb.append("§r");
-				}
-				sender.sendMessage(sb.toString());
-			}
-			@Override
-			public void onConsole(CommandSender ccs, String[] args) {
-				if (onCmd(ccs, args)) return;
-				if (args[0].equals("reload")) {
-					ccs.sendMessage("§9[Titles] §6Reloading...");
-					loadTitles();
-					return;
-				}
-				ccs.sendMessage("§9[Titles] §cUnknown argument");
-			};
-			@Override
-			public List<String> onTab(Player p, String[] args) {
-				return this.tab((CommandSender) p, args);
-			}
-			@Override
-			public List<String> onTab(CommandSender p, String[] args) {
-				return this.tab(p, args);
-			}
-		};
+//		ComplexMatiaCommand cmd = new ComplexMatiaCommand("pa:fakeopen");
+//		cmd.on(p -> {
+//			p.sendMessage("open/close");
+//			
+//		});
+//		cmd.on("open", p -> NMS.server.broadcastChestAnimation(p.getTargetBlock(null, 10).getLocation(), true));
+//		cmd.on("close", p -> NMS.server.broadcastChestAnimation(p.getTargetBlock(null, 10).getLocation(), false));
+		new TitleCommand();
 		loadTitles();
 	}
 	

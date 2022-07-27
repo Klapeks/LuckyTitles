@@ -14,7 +14,9 @@ public class TitleDB {
 
 	public static List<String> getTitles(String playername, String category) {
 		Where where = SQL.where("`player` = ? AND `category` = ?", playername.toLowerCase(), category);
-		return SQL.sql().selectOne(TitlePlayer.class, where).titles;
+		TitlePlayer tp = SQL.sql().selectOne(TitlePlayer.class, where);
+		if (tp==null || tp.titles.isEmpty()) return null;
+		return tp.titles;
 	}
 
 	public static void addTitle(String playername, String category, String title) {
@@ -30,6 +32,15 @@ public class TitleDB {
 		else if (tp.titles.contains(title)) return;
 		tp.titles.add(title);
 		SQL.sql().update(tp, where);
+	}
+
+	public static void removeTitle(String playername, String category, String title) {
+		Where where = SQL.where("`player` = ? AND `category` = ?", playername.toLowerCase(), category);
+		TitlePlayer tp = SQL.sql().selectOne(TitlePlayer.class, where);
+		if (tp==null) return;
+		if (tp.titles.contains(title)) tp.titles.remove(title);
+		SQL.sql().update(tp, where);
+	
 	}
 	
 }
