@@ -2,6 +2,7 @@ package com.klapeks.cosmetic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -58,7 +59,7 @@ public class Titles {
 	
 	public static class TitleCategory {
 		String id, name;
-		Map<String, String> titles = new HashMap<>();
+		Map<String, String> titles = new LinkedHashMap<>();
 		TitleMenu menu;
 		private TitleCategory(String id) {
 			this(id, null);
@@ -76,9 +77,6 @@ public class Titles {
 			return id;
 		}
 		public void addTitle(String id, String name) {
-			ItemStack item = xItem.of(Material.LIGHT_GRAY_DYE, "ßf“ËÚÛÎ: "+name);
-			item = NMS.item.setNBT(item, "title_id", id);
-			menu.setItem(titles.size(), item);
 			titles.put(id, name);
 		}
 		void clear() {

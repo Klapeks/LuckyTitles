@@ -1,23 +1,15 @@
 package com.klapeks.cosmetic;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.klapeks.cosmetic.Titles.TitleCategory;
 import com.klapeks.cosmetic.db.TitleDB;
-import com.klapeks.libs.commands.ComplexMatiaCommand;
-import com.klapeks.libs.commands.MatiaCommand;
-import com.klapeks.libs.commands.Messaging;
-import com.klapeks.libs.nms.NMS;
 
 public class TitlesMain extends JavaPlugin {
 	
